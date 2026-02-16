@@ -6,12 +6,19 @@ class Cache {
 
   constructor(private readonly fn: (...args: unknown[]) => unknown) {}
 
-  call(...args: unknown[]) {}
+  call(...args: unknown[]) {
+    const key = this.fn.toString();
+    if (key in this.cache) {
+      return this.cache[key];
+    }
+    this.cache[key] = this.fn(...args);
+    return this.cache[key];
+  }
 
   clear(): void {}
 
   get size(): number {
-    return 0;
+    return Object.keys(this.cache).length;
   }
 }
 
